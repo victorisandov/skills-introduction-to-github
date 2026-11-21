@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wear the Weather</title>
+  <style>
+    :root { --bg: #f7f5f2; --ink: #1d1d1f; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      font-family: system-ui, sans-serif; background: var(--bg); color: var(--ink);
+      transition: background .6s ease;
+    }
+    .card { width: min(92vw, 420px); text-align: center; padding: 2rem 1.5rem; }
+    h1 { font-size: 1.4rem; margin: 0 0 .25rem; }
+    .sub { opacity: .6; font-size: .9rem; margin-bottom: 2rem; }
+    .temp { font-size: 3.5rem; font-weight: 700; line-height: 1; }
+    input[type=range] { width: 100%; margin: 1.5rem 0 2rem; accent-color: #444; }
+    .swatches { display: flex; gap: .6rem; justify-content: center; margin-bottom: 1.25rem; }
+    .swatch {
+      width: 56px; height: 56px; border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.12);
+    }
+    .name { font-size: 1.1rem; font-weight: 600; }
+    .why { font-size: .9rem; opacity: .7; margin-top: .4rem; min-height: 2.4em; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Wear the Weather</h1>
+    <p class="sub">Slide to today's high and get a color.</p>
+
+    <div class="temp"><span id="tempOut">62</span>°F</div>
+    <input id="tempIn" type="range" min="0" max="110" value="62" aria-label="Today's high temperature">
+
+    <div class="swatches" id="swatches"></div>
+    <div class="name" id="name"></div>
+    <div class="why" id="why"></div>
+  </main>
+
+<script>
+  const BANDS = [
+    { max: 40,  label: "Deep cool",
+      why: "Cold out — dark, saturated cool tones hold warmth visually and layer well.",
+      colors: ["#1f2a44", "#2f3e46", "#274d3d", "#3a4a5c"] },
+    { max: 55,  label: "Cool",
+      why: "Chilly — denim, teal and burgundy read as cool without going flat.",
+      colors: ["#3b5b7a", "#2c7a7b", "#6b2d3c", "#5a6b3b"] },
+    { max: 70,  label: "Neutral",
+      why: "Mild — neutrals work with anything, so keep it easy.",
+      colors: ["#efe6d8", "#c19a6b", "#a8b89a", "#9a9a94"] },
+    { max: 85,  label: "Warm",
+      why: "Warm day — coral, mustard and terracotta match the light.",
+      colors: ["#ff6f61", "#d4a017", "#c96f4a", "#e8a87c"] },
+    { max: Infinity, label: "Hot",
+      why: "Really hot — pale and light colors reflect sun and feel cooler.",
+      colors: ["#fdfcf7", "#e8dcc4", "#f4d35e", "#a8d0e6"] }
+  ];
+
+  const tempIn = document.getElementById("tempIn");
+  const tempOut = document.getElementById("tempOut");
+  const swatches = document.getElementById("swatches");
+  const nameEl = document.getElementById("name");
+  const whyEl = document.getElementById("why");
+
+  function render(t) {
+    tempOut.textContent = t;
+    const band = BANDS.find(b => t < b.max);
+
+    swatches.innerHTML = band.colors
+      .map(c => `<div class="swatch" style="background:${c}" title="${c}"></div>`)
+      .join("");
+
+    nameEl.textContent = band.label;
+    whyEl.textContent = band.why;
+
+    // tint the page background with the first color, very faintly
+    document.body.style.background = band.colors[0] + "22";
+  }
+
+  tempIn.addEventListener("input", e => render(Number(e.target.value)));
+  render(Number(tempIn.value));
+</script>
+</body>
+</html>
