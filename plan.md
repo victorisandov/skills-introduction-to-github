@@ -1,1 +1,5 @@
-
+- Goal: Help the user know what color to wear depending on the temperature of the day.
+- Who it is for: Users who like fashion, want to look good.
+- Must-have features: Provide a color for the user to wear, an input feature for them to enter the temperature of the day, a nice message to inspire them on their outfit choice.
+- Nice-to-haves: A way to connect their weather app to the app so it automatically knows the temperature and can give them the color once the code is ran. Also, a way it can make them an outfit from the color based on clothes they already have.
+- Out of scope:- Photos, outfit uploads, or image analysis.
